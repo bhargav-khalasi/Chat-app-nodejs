@@ -3,8 +3,10 @@ const Joi = require('joi');
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 mongoose.pluralize(null);
+const config = require('config')
+const host = config.get('db')
 
-mongoose.connect('mongodb://localhost/ChatApp',{ useNewUrlParser: true,useUnifiedTopology: true })
+mongoose.connect(`mongodb://${host}/ChatApp`,{ useNewUrlParser: true,useUnifiedTopology: true })
     .then(()=>console.log("Connected to the MongoDB"))
     .catch((err)=>console.log(err.message));
 

@@ -4,15 +4,22 @@
   "description": "My First Chat Application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "12.16.1"
   },
   "author": "Bhargav Khalasi",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "config": "^3.3.1",
     "consolidate": "^0.15.1",
     "express": "^4.17.1",
+    "helmet": "^3.22.0",
     "joi": "^14.3.1",
     "lodash": "^4.17.11",
     "mongoose": "^5.5.12",
