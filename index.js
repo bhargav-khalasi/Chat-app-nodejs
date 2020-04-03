@@ -26,13 +26,15 @@ var server = app.listen(port,()=>console.log(`Listening to port ${port}..`));
 var io = socket(server);
 io.use(function(socket, next) {
     curr = socket.request._query['uemail'];
+    // console.log(curr.split("@")[0])
     next();
   });
 
 io.on('connection',async function(socket){
-    let on_user = await User.find({},{name:1,_id:1,isOnline:1});
+    console.log(curr)
+    let on_user = await User.find({},{email:1,name:1,_id:1,isOnline:1});
     let curr_user = await User.findOne({_id: curr },{name:1,_id:1});
-    //console.log(curr_user);
+    console.log(curr_user);
     socket.join(curr_user._id);
     socket.emit('update_user_list',on_user);
     socket.broadcast.emit('broadcast',curr_user);

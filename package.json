@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Bhargav Khalasi",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
