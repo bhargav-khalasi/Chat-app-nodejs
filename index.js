@@ -51,9 +51,15 @@ io.on('connection',async function(socket){
         //console.log(msg_h);
     });
     socket.on('window_closed',async (data)=>{
-      await close_conn(data.from_id)
-      let on_user = await online_users()
+      await close_conn(data.from_id);
+      let on_user = await online_users();
       //console.log(on_user)
+      socket.broadcast.emit('update_user_list',on_user);
+    });
+    socket.on('logout_chat',async (data)=>{
+      await close_conn(data.from_id);
+      socket.emit('redirect','/');
+      let on_user = await online_users();
       socket.broadcast.emit('update_user_list',on_user);
     });
 });

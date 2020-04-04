@@ -40,15 +40,6 @@ const Chat = mongoose.model('chat_history',new mongoose.Schema({
     to_id: String,
     message: String
 }));
-function validateUser(user)
-{
-    const schema = {
-        name: Joi.string().min(3).max(30).required(),
-        email: Joi.string().min(5).max(255).required().email(),
-        pass: Joi.string().min(5).max(1024).required()
-    }
-    return Joi.validate(user,schema);
-}
 
 exports.User = User;
 exports.Chat = Chat; 

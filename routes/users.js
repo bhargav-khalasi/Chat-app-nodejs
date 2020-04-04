@@ -37,6 +37,7 @@ router.post('/user/login',async (req,res)=>{
     if(!user) return res.status(400).send('This Email is not Registered');
     const validPass = await bcrypt.compare(req.body.pass,user.password);
     if(!validPass) return res.status(400).send('Invalid Email or Password');
+    if(user.isOnline)return res.status(400).send('Logged in from other device');
     User.updateOne({email: req.body.email}, {$set:{isOnline: true}},(err)=>{
         if(err)return res.sendStatus(400).send("Something went wrong while updating");
     });

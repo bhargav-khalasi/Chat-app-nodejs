@@ -13,12 +13,16 @@ $(window).on('load',function(){
     var prev;
     var text_id = document.getElementById("user_chat");
     var btn = document.getElementById("send");
+    const log_btn = document.getElementById("logout-btn");
     var user_name = document.getElementById("user_name");
     if(to_id==null)
     {
         $("#textmessage").prop('disabled', true);
     }
     //socket
+    socket.on('redirect', function(destination) {
+        window.location.href = destination;
+    });
     socket.on('update_user_list',(data)=>{
         var liston = "";
         var listoff = "";
@@ -132,7 +136,11 @@ $(window).on('load',function(){
         }
     });
 
-
+    log_btn.addEventListener('click',()=>{
+        socket.emit('logout_chat',{
+            from_id: from_id
+        });
+    });   
 
     //click event
     $("#userlist").on("click","div.chat_list",function(){
@@ -156,12 +164,13 @@ $(window).on('load',function(){
         $("#seluser").text("Chatting with "+txt);
     });
     window.addEventListener('beforeunload',function(e){
-        e.preventDefault();
-        e.returnValue = '';
-    });
-    window.addEventListener('unload',function(e){
-        //console.log("Closing window");
+        //e.preventDefault();
+        //e.returnValue = 'You will be loged out from the system. Want to continue?';
         socket.emit('window_closed',{from_id : from_id});
     });
+    // window.addEventListener('unload',function(e){
+    //     //console.log("Closing window");
+    //     socket.emit('window_closed',{from_id : from_id});
+    // });
 });
 
