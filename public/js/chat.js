@@ -155,12 +155,13 @@ $(window).on('load',function(){
         txt = txt.match(regex)[1];
         $("#seluser").text("Chatting with "+txt);
     });
-
     window.addEventListener('beforeunload',function(e){
         e.preventDefault();
+        e.returnValue = '';
+    });
+    window.addEventListener('unload',function(e){
         //console.log("Closing window");
         socket.emit('window_closed',{from_id : from_id});
-        e.returnValue = '';
     });
 });
 
