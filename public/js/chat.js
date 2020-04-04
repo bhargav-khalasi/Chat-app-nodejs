@@ -1,11 +1,13 @@
 $(window).on('load',function(){
     var uri = window.location.href.toString().split("?");
     const host = location.host
+    const prot = location.protocol
+    //console.log(prot)
     window.history.replaceState({},document.title,uri[0]);
     var from_id = uri[1].split("=")[1];
     var users = document.getElementById('userlist');
     var curr = "uemail="+from_id;
-    var socket = io.connect(`http://${host}`,{query: curr});
+    var socket = io.connect(`${prot}//${host}`,{query: curr});
     var to_id;
     var prev;
     var text_id = document.getElementById("user_chat");
