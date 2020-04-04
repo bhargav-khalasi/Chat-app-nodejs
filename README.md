@@ -5,4 +5,4 @@ Hosted at https://chatapp-bk.herokuapp.com/ using Heroku and MLab for MongoDB.
 
 
 ###### Credits
-* Web pages designed by colorlib. *
+*Web pages designed by colorlib.*
