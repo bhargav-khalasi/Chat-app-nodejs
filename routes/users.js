@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {User,Chat} = require('../models/user');
 const url = require('url');
-var userchat;
 
  //Get
  router.get('/', (req,res)=> res.render('login'));
@@ -39,7 +38,7 @@ router.post('/user/login',async (req,res)=>{
     const validPass = await bcrypt.compare(req.body.pass,user.password);
     if(!validPass) return res.status(400).send('Invalid Email or Password');
     User.updateOne({email: req.body.email}, {$set:{isOnline: true}},(err)=>{
-        if(err)return res.send(400).send("Something went wrong while updating");
+        if(err)return res.sendStatus(400).send("Something went wrong while updating");
     });
     res.redirect(url.format({
         pathname: "/chat",
