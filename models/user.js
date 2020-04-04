@@ -3,9 +3,8 @@ const Joi = require('joi');
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 mongoose.pluralize(null);
-const config = require('config')
-const host = config.get('db')
-//console.log(host)
+const config = require('config');
+const host = config.get('db');
 mongoose.connect(host,{ useNewUrlParser: true,useUnifiedTopology: true })
     .then(()=>console.log("Connected to the MongoDB"))
     .catch((err)=>console.log(err.message));
@@ -38,7 +37,8 @@ const User = mongoose.model('users',new mongoose.Schema({
 const Chat = mongoose.model('chat_history',new mongoose.Schema({
     from_id: String,
     to_id: String,
-    message: String
+    message: String,
+    chat_time: Date
 }));
 
 exports.User = User;

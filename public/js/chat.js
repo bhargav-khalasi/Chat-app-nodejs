@@ -2,10 +2,8 @@ $(window).on('load',function(){
     var uri = window.location.href.toString().split("?");
     const host = location.host
     const prot = location.protocol
-    //console.log(prot)
     window.history.replaceState({},document.title,uri[0]);
     var from_id = uri[1].split("=")[1];
-    console.log(from_id)
     var users = document.getElementById('userlist');
     var curr = "uemail="+from_id;
     var socket = io.connect(`${prot}//${host}`,{query: curr});
@@ -79,7 +77,7 @@ $(window).on('load',function(){
                         '<div class="received_msg">'+
                         '<div class="received_withd_msg">'+
                         '<p>'+data.msg+'</p>'+
-                        '<span class="time_date"> 11:01 AM    |    June 9</span></div></div></div>'
+                        '<span class="time_date">'+dateFormat(data.chat_time)+'</span></div></div></div>'
                         text_id.innerHTML += msg;
             
         }
@@ -97,7 +95,7 @@ $(window).on('load',function(){
                 merger += '<div class="outgoing_msg">'+
                 '<div class="sent_msg">'+
                 '<p>'+data[x].message+'</p>'+
-                '<span class="time_date"> 11:01 AM    |    June 9</span> </div></div>';
+                '<span class="time_date">'+dateFormat(data[x].chat_time)+'</span> </div></div>';
             }
             else 
             {
@@ -106,27 +104,36 @@ $(window).on('load',function(){
                 '<div class="received_msg">'+
                 '<div class="received_withd_msg">'+
                 '<p>'+data[x].message+'</p>'+
-                '<span class="time_date"> 11:01 AM    |    June 9</span></div></div></div>'
+                '<span class="time_date">'+dateFormat(data[x].chat_time)+'</span></div></div></div>'
             }
-    }
+        }
         text_id.innerHTML = merger;
         text_id.scrollTop = text_id.scrollHeight - text_id.clientHeight;
     });
 
 
 
-
+    function dateFormat(chat_time)
+    {
+        var today = new Date(chat_time);
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes();
+        var dateTime = time+' | '+date;
+        return dateTime;
+    }
     //socket emit
     btn.addEventListener('click',()=>{
+        var today = new Date();
         socket.emit('chat',{
             from_id: from_id,
             to_id: to_id,
             message: textmessage.value,
+            chat_time: today
         });
         text_id.innerHTML +=  '<div class="outgoing_msg">'+
                                         '<div class="sent_msg">'+
                                         '<p>'+textmessage.value+'</p>'+
-                                        '<span class="time_date"> 11:01 AM    |    June 9</span> </div></div>'
+                                        '<span class="time_date">'+dateFormat(today)+'</span> </div></div>'
         textmessage.value = "";
         text_id.scrollTop = text_id.scrollHeight - text_id.clientHeight;
     });    

@@ -27,33 +27,32 @@ var server = app.listen(port,()=>console.log(`Listening to port ${port}..`));
 var io = socket(server);
 io.use(function(socket, next) {
     curr = socket.request._query['uemail'];
-    // console.log(curr.split("@")[0])
     next();
   });
 
 io.on('connection',async function(socket){
-    //console.log(curr)
     let on_user = await online_users()
     let curr_user = await current_user(curr);
-    //console.log(curr_user);
     socket.join(curr_user._id);
     socket.emit('update_user_list',on_user);
     socket.broadcast.emit('broadcast',curr_user);
     socket.on('chat',async (data)=>{
-      io.sockets.in(data.to_id).emit('new_msg',{from_id:data.from_id, msg:data.message});
+      let msg_from = {from_id:data.from_id, msg:data.message,
+                              chat_time:data.chat_time};
+      io.sockets.in(data.to_id).emit('new_msg',msg_from);
       await savechat(data);
     });
     socket.on('getmessages',async (data)=>{
+      const dict_from = {from_id:data.from_id,to_id:data.to_id};
+      const dict_to = {from_id:data.to_id,to_id:data.from_id};
       let msg_h = await Chat.find()
-        .or([{from_id:data.from_id,to_id:data.to_id},{from_id:data.to_id,to_id:data.from_id}])
-        .select({message:1,from_id:1,_id:0});
+        .or([dict_from,dict_to])
+        .select({message:1,from_id:1,_id:0,chat_time:1});
         socket.emit("take_msg",msg_h);
-        //console.log(msg_h);
     });
     socket.on('window_closed',async (data)=>{
       await close_conn(data.from_id);
       let on_user = await online_users();
-      //console.log(on_user)
       socket.broadcast.emit('update_user_list',on_user);
     });
     socket.on('logout_chat',async (data)=>{
@@ -69,7 +68,8 @@ async function savechat(data)
   let save_new_msg = new Chat({
     from_id: data.from_id,
     to_id: data.to_id,
-    message: data.message
+    message: data.message,
+    chat_time:data.chat_time
   });
   await save_new_msg.save();
 }

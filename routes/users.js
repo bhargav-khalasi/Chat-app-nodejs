@@ -17,8 +17,6 @@ const url = require('url');
 
  //Post
 router.post('/user/register',async (req,res)=>{
-    //const {error} = validate(req.body);
-    //if(error) return res.status(400).send(error.details[0].message);
     let user = await User.findOne({email: req.body.email});
     if(user) return res.status(400).send('Email Already registered.');
     let userObject = new User({
