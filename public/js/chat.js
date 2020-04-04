@@ -5,6 +5,7 @@ $(window).on('load',function(){
     //console.log(prot)
     window.history.replaceState({},document.title,uri[0]);
     var from_id = uri[1].split("=")[1];
+    console.log(from_id)
     var users = document.getElementById('userlist');
     var curr = "uemail="+from_id;
     var socket = io.connect(`${prot}//${host}`,{query: curr});
@@ -154,6 +155,12 @@ $(window).on('load',function(){
         txt = txt.match(regex)[1];
         $("#seluser").text("Chatting with "+txt);
     });
-});
 
+    window.addEventListener('beforeunload',function(e){
+        e.preventDefault();
+        //console.log("Closing window");
+        socket.emit('window_closed',{from_id : from_id});
+        e.returnValue = '';
+    });
+});
 

@@ -33,15 +33,15 @@ io.use(function(socket, next) {
 
 io.on('connection',async function(socket){
     //console.log(curr)
-    let on_user = await User.find({},{email:1,name:1,_id:1,isOnline:1});
-    let curr_user = await User.findOne({_id: curr },{name:1,_id:1});
+    let on_user = await online_users()
+    let curr_user = await current_user(curr);
     //console.log(curr_user);
     socket.join(curr_user._id);
     socket.emit('update_user_list',on_user);
     socket.broadcast.emit('broadcast',curr_user);
-    socket.on('chat',(data)=>{
+    socket.on('chat',async (data)=>{
       io.sockets.in(data.to_id).emit('new_msg',{from_id:data.from_id, msg:data.message});
-      savechat(data);
+      await savechat(data);
     });
     socket.on('getmessages',async (data)=>{
       let msg_h = await Chat.find()
@@ -49,6 +49,12 @@ io.on('connection',async function(socket){
         .select({message:1,from_id:1,_id:0});
         socket.emit("take_msg",msg_h);
         //console.log(msg_h);
+    });
+    socket.on('window_closed',async (data)=>{
+      await close_conn(data.from_id)
+      let on_user = await online_users()
+      //console.log(on_user)
+      socket.broadcast.emit('update_user_list',on_user);
     });
 });
 
@@ -60,4 +66,18 @@ async function savechat(data)
     message: data.message
   });
   await save_new_msg.save();
+}
+
+async function close_conn(user_id)
+{
+  await User.updateOne({ _id:user_id }, { isOnline: false });
+}
+async function online_users()
+{
+  return await User.find({},{email:1,name:1,_id:1,isOnline:1});
+}
+
+async function current_user(curr_id)
+{
+  return await User.findOne({_id: curr_id },{name:1,_id:1});
 }
