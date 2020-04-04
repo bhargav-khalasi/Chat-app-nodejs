@@ -164,13 +164,7 @@ $(window).on('load',function(){
         $("#seluser").text("Chatting with "+txt);
     });
     window.addEventListener('beforeunload',function(e){
-        //e.preventDefault();
-        //e.returnValue = 'You will be loged out from the system. Want to continue?';
         socket.emit('window_closed',{from_id : from_id});
     });
-    // window.addEventListener('unload',function(e){
-    //     //console.log("Closing window");
-    //     socket.emit('window_closed',{from_id : from_id});
-    // });
 });
 
