@@ -4,5 +4,5 @@ Real-time-Chat(using Socket-IO) web-Application using Nodejs and its modules as 
 Hosted at https://chatapp-bk.herokuapp.com/ using Heroku and MLab for MongoDB.  
 
 
-
-*Web pages designed by colorlib
+######Credits
+Web pages designed by colorlib
