@@ -5,7 +5,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.pluralize(null);
 const config = require('config')
 const host = config.get('db')
-
+//console.log(host)
 mongoose.connect(host,{ useNewUrlParser: true,useUnifiedTopology: true })
     .then(()=>console.log("Connected to the MongoDB"))
     .catch((err)=>console.log(err.message));
