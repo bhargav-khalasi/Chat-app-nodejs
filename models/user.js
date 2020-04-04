@@ -32,6 +32,10 @@ const User = mongoose.model('users',new mongoose.Schema({
     isOnline:{
         type: Boolean,
         default: false
+    },
+    lastOnline:{
+        type: Date,
+        default:new Date()
     }
 }));
 const Chat = mongoose.model('chat_history',new mongoose.Schema({

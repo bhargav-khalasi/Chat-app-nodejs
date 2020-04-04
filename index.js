@@ -31,7 +31,7 @@ io.use(function(socket, next) {
   });
 
 io.on('connection',async function(socket){
-    let on_user = await online_users()
+    let on_user = await online_users();
     let curr_user = await current_user(curr);
     socket.join(curr_user._id);
     socket.emit('update_user_list',on_user);
@@ -80,7 +80,7 @@ async function close_conn(user_id)
 }
 async function online_users()
 {
-  return await User.find({},{email:1,name:1,_id:1,isOnline:1});
+  return await User.find({},{email:1,name:1,_id:1,isOnline:1,lastOnline:1});
 }
 
 async function current_user(curr_id)

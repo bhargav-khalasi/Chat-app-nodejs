@@ -13,6 +13,7 @@ $(window).on('load',function(){
     var btn = document.getElementById("send");
     const log_btn = document.getElementById("logout-btn");
     var user_name = document.getElementById("user_name");
+    const month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     if(to_id==null)
     {
         $("#textmessage").prop('disabled', true);
@@ -33,17 +34,19 @@ $(window).on('load',function(){
                             "<div class='chat_people'>"+
                             "<div class='chat_img'> <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'> </div>"+
                             "<div class='chat_ib'>"+
-                                "<h5>"+data[x].name+"&nbsp;&nbsp;<div class='led-green'></div><span class='chat_date'>Dec 25</span></h5>"+
+                                "<h5>"+data[x].name+"&nbsp;&nbsp;<div class='led-green'></div><span class='chat_date'>Online</span></h5>"+
                                 "<p>Hey there, i m on chat</p>"+
                             "</div></div></div>";
                 }
                 else
                 {
+                    let today = new Date(data[x].lastOnline);
+                    let date = today.getDate()+'-'+month_short[today.getMonth()]+'-'+today.getFullYear();
                     listoff += "<div class='chat_list' id='"+data[x]._id+"'>"+
                             "<div class='chat_people'>"+
                             "<div class='chat_img'> <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'> </div>"+
                             "<div class='chat_ib'>"+
-                                "<h5>"+data[x].name+"&nbsp;&nbsp;<div class='led-red'></div><span class='chat_date'>Dec 25</span></h5>"+
+                                "<h5>"+data[x].name+"&nbsp;&nbsp;<div class='led-red'></div><span class='chat_date'>"+date+"</span></h5>"+
                                 "<p>Hey There, I m on chat</p>"+
                             "</div></div></div>";
                 }
@@ -60,7 +63,7 @@ $(window).on('load',function(){
                         "<div class='chat_people'>"+
                         "<div class='chat_img'> <img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'> </div>"+
                         "<div class='chat_ib'>"+
-                            "<h5>"+data.name+"&nbsp;&nbsp;<div class='led-green'></div><span class='chat_date'>Dec 25</span></h5>"+
+                            "<h5>"+data.name+"&nbsp;&nbsp;<div class='led-green'></div><span class='chat_date'>Online</span></h5>"+
                             "<p>Hey there, I m on chat</p>"+
                             "</div></div></div>";
         $("#"+data._id).remove();
@@ -87,7 +90,6 @@ $(window).on('load',function(){
     });
 
     socket.on('take_msg',(data)=>{
-        //console.log(data);
         var merger = "";
         for(x in data){
             if(data[x].from_id===from_id)
@@ -118,7 +120,7 @@ $(window).on('load',function(){
         var today = new Date(chat_time);
         var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         var time = today.getHours() + ":" + today.getMinutes();
-        var dateTime = time+' | '+date;
+        var dateTime = time+'&nbsp&nbsp|&nbsp&nbsp'+date;
         return dateTime;
     }
     //socket emit
