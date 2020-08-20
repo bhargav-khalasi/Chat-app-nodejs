@@ -13,7 +13,7 @@
   "author": "Bhargav Khalasi",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "config": "^3.3.1",
